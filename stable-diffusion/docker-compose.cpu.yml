@@ -1,9 +1,13 @@
 name: thinkexponential-ailab-stable-diffusion
 
-# ThinkExponential AILab — Stable Diffusion WebUI (AUTOMATIC1111) — CPU only
+# ThinkExponential AILab — Stable Diffusion WebUI (AUTOMATIC1111) — Intel CPU / OpenVINO
 #
-# No GPU required. Image generation will be very slow (minutes per image).
-# Recommended for testing the interface or on low-resource machines.
+# No GPU required. Runs on Intel CPU silicon using OpenVINO acceleration.
+# Image generation will be slow (minutes per image).
+# Recommended for testing the interface or on Intel CPU-only machines.
+#
+# References:
+#   https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon
 #
 # Usage:
 #   docker compose -f docker-compose.cpu.yml up -d
@@ -21,7 +25,9 @@ services:
       - sd_outputs:/app/stable-diffusion-webui/outputs
       - sd_extensions:/app/stable-diffusion-webui/extensions
     environment:
-      - COMMANDLINE_ARGS=--listen --use-cpu all --no-half --api
+      # Skip CUDA/GPU detection so the container starts on CPU-only hosts
+      - PYTORCH_TRACING_MODE=TORCHFX
+      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --use-cpu all --precision full --no-half --api
     restart: unless-stopped
 
 volumes:

@@ -46,7 +46,14 @@ Place `.safetensors` or `.ckpt` model files in the `sd_models` Docker volume, or
    ```
 4. Supported GPUs: RX 6000/7000 series (gfx1030+), Instinct MI series — check the [AMD ROCm compatibility matrix](https://rocm.docs.amd.com/en/latest/compatibility/compatibility-matrix.html)
 
-> **Note:** Docker Engine inside WSL2 is recommended over Docker Desktop for AMD GPU access — Docker Desktop may not correctly expose `/dev/kfd` to containers.
+### CPU only — Intel Silicon (OpenVINO)
+
+No additional prerequisites beyond Docker. The compose file sets the OpenVINO-compatible flags automatically:
+- `--skip-torch-cuda-test` — bypasses the GPU detection that would otherwise prevent startup on CPU-only hosts
+- `--precision full --no-half` — disables half-precision arithmetic, required for CPU inference
+- `PYTORCH_TRACING_MODE=TORCHFX` — enables OpenVINO acceleration via `torch.compile`
+
+> **Note:** Image generation on CPU is very slow (minutes per image). This mode is intended for testing the interface or on Intel CPU-only machines. See the [Intel Silicon installation guide](https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon) for more details.
 
 ## Quick start
 
@@ -60,7 +67,7 @@ docker compose -f docker-compose.nvidia.yml up -d
 docker compose -f docker-compose.amd.yml up -d
 ```
 
-### CPU only (slow)
+### Intel CPU only (OpenVINO, slow)
 ```bash
 docker compose -f docker-compose.cpu.yml up -d
 ```
