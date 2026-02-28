@@ -83,14 +83,22 @@ Open **http://localhost:3000** in your browser to access Open WebUI.
 
 ## Pulling models
 
-After the stack is running, pull a model with:
+After the stack is running, pull a model in one of two ways:
+
+### Option A — Open WebUI (browser)
+
+1. Open **http://localhost:3000** and sign in.
+2. Click the **⚙ Settings** icon (top-right).
+3. Go to **Models → Manage**.
+4. In the **"Pull a model from Ollama.com"** field, type the model name (e.g. `llama3.3`).
+5. Click the **download (↓) icon** to start pulling the model.
+
+Browse all available models at **[ollama.com/library](https://ollama.com/library)**.
+
+### Option B — Docker CLI
 
 ```bash
-# Using Docker exec
 docker exec -it ollama ollama pull llama3.3
-
-# Or use the Open WebUI interface at http://localhost:3000
-# (Settings → Models → Pull a model)
 ```
 
 ## API access
