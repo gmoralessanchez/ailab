@@ -1,0 +1,43 @@
+name: ailab-stable-diffusion
+
+# Stable Diffusion WebUI (AUTOMATIC1111) — NVIDIA GPU (CUDA)
+#
+# Prerequisites (WSL2 + Windows):
+#   1. WSL2 with kernel 5.15+ (`wsl --update`)
+#   2. NVIDIA driver 525+ installed on Windows
+#   3. NVIDIA Container Toolkit inside WSL2 (run scripts/setup-wsl-nvidia.sh)
+#   4. At least 6 GB VRAM recommended (4 GB minimum with --medvram flag)
+#
+# First run will download the default model (~4 GB) automatically.
+# Additional models can be placed in ./models/Stable-diffusion/
+#
+# Usage:
+#   docker compose -f docker-compose.nvidia.yml up -d
+#
+# WebUI is available at http://localhost:7860
+
+services:
+  stable-diffusion-webui:
+    image: universonic/stable-diffusion-webui:latest
+    container_name: stable-diffusion-webui
+    ports:
+      - "7860:7860"
+    volumes:
+      - sd_models:/app/stable-diffusion-webui/models
+      - sd_outputs:/app/stable-diffusion-webui/outputs
+      - sd_extensions:/app/stable-diffusion-webui/extensions
+    environment:
+      - COMMANDLINE_ARGS=--listen --xformers --api
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+volumes:
+  sd_models:
+  sd_outputs:
+  sd_extensions:

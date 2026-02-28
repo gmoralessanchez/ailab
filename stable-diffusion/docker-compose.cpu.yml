@@ -1,0 +1,30 @@
+name: ailab-stable-diffusion
+
+# Stable Diffusion WebUI (AUTOMATIC1111) — CPU only
+#
+# No GPU required. Image generation will be very slow (minutes per image).
+# Recommended for testing the interface or on low-resource machines.
+#
+# Usage:
+#   docker compose -f docker-compose.cpu.yml up -d
+#
+# WebUI is available at http://localhost:7860
+
+services:
+  stable-diffusion-webui:
+    image: universonic/stable-diffusion-webui:latest
+    container_name: stable-diffusion-webui
+    ports:
+      - "7860:7860"
+    volumes:
+      - sd_models:/app/stable-diffusion-webui/models
+      - sd_outputs:/app/stable-diffusion-webui/outputs
+      - sd_extensions:/app/stable-diffusion-webui/extensions
+    environment:
+      - COMMANDLINE_ARGS=--listen --use-cpu all --no-half --api
+    restart: unless-stopped
+
+volumes:
+  sd_models:
+  sd_outputs:
+  sd_extensions:

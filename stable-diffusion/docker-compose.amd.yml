@@ -1,0 +1,49 @@
+name: ailab-stable-diffusion
+
+# Stable Diffusion WebUI (AUTOMATIC1111) — AMD GPU (ROCm)
+#
+# Prerequisites (WSL2 + Windows):
+#   1. WSL2 with kernel 5.15+ (`wsl --update`)
+#   2. AMD ROCm 6.x installed inside WSL2
+#   3. User added to render and video groups:
+#        sudo usermod -aG render,video $USER
+#   4. Verify /dev/kfd and /dev/dri are accessible
+#
+# Supported AMD GPUs: RX 6000/7000 series (gfx1030+), Instinct MI series
+# Note: ROCm on WSL2 is in active development. Verify your GPU support at:
+#   https://rocm.docs.amd.com/en/latest/compatibility/compatibility-matrix.html
+#
+# If your GPU is not natively supported, try setting:
+#   HSA_OVERRIDE_GFX_VERSION=10.3.0   (for RX 6000 series workaround)
+#
+# Usage:
+#   docker compose -f docker-compose.amd.yml up -d
+#
+# WebUI is available at http://localhost:7860
+
+services:
+  stable-diffusion-webui:
+    image: universonic/stable-diffusion-webui:rocm
+    container_name: stable-diffusion-webui
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+      - render
+    ports:
+      - "7860:7860"
+    volumes:
+      - sd_models:/app/stable-diffusion-webui/models
+      - sd_outputs:/app/stable-diffusion-webui/outputs
+      - sd_extensions:/app/stable-diffusion-webui/extensions
+    environment:
+      - COMMANDLINE_ARGS=--listen --api
+      # Uncomment and set if your GPU requires a GFX version override:
+      # - HSA_OVERRIDE_GFX_VERSION=10.3.0
+    restart: unless-stopped
+
+volumes:
+  sd_models:
+  sd_outputs:
+  sd_extensions:
