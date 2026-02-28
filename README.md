@@ -65,24 +65,37 @@ Open **http://localhost:7860** to access the Stable Diffusion WebUI.
 - **NVIDIA**: Driver ≥ 525 on Windows + NVIDIA Container Toolkit in WSL2
 - **AMD**: ROCm 6.x in WSL2 + supported GPU (RX 6000/7000 series or Instinct MI)
 
-See each deployment's `README.md` for detailed prerequisites and usage.
+See the **[docs/](docs/)** folder for detailed guides, or each deployment's `README.md` for quick-reference instructions.
+
+## Documentation
+
+| Guide | Description |
+|---|---|
+| [docs/environment-setup.md](docs/environment-setup.md) | Full WSL2 + Docker + GPU driver setup walkthrough |
+| [docs/ollama-usage.md](docs/ollama-usage.md) | LLM usage with API examples for each model |
+| [docs/stable-diffusion-usage.md](docs/stable-diffusion-usage.md) | Image generation with prompts, API examples, and parameter reference |
 
 ## Repository structure
 
 ```
 ailab/
-├── ollama/                        # LLM server + chat UI
+├── docs/
+│   ├── README.md                      # Documentation index
+│   ├── environment-setup.md           # WSL2, Docker, NVIDIA, AMD setup guide
+│   ├── ollama-usage.md                # LLM usage and examples
+│   └── stable-diffusion-usage.md     # Image generation usage and examples
+├── ollama/                            # LLM server + chat UI
 │   ├── docker-compose.nvidia.yml
 │   ├── docker-compose.amd.yml
 │   ├── docker-compose.cpu.yml
 │   └── README.md
-├── stable-diffusion/              # Image generation
+├── stable-diffusion/                  # Image generation
 │   ├── docker-compose.nvidia.yml
 │   ├── docker-compose.amd.yml
 │   ├── docker-compose.cpu.yml
 │   └── README.md
 └── scripts/
-    ├── check-gpu.sh               # Detect GPU and recommend compose file
-    ├── setup-wsl-nvidia.sh        # Install NVIDIA Container Toolkit in WSL2
-    └── setup-wsl-amd.sh           # Install AMD ROCm in WSL2
+    ├── check-gpu.sh                   # Detect GPU and recommend compose file
+    ├── setup-wsl-nvidia.sh            # Install NVIDIA Container Toolkit in WSL2
+    └── setup-wsl-amd.sh              # Install AMD ROCm in WSL2
 ```
