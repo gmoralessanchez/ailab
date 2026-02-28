@@ -1,6 +1,6 @@
-# Environment Setup
+# ThinkExponential AILab — Environment Setup
 
-This guide walks through everything needed to run the AI model deployments in this repository on **Windows with WSL2**, for both **NVIDIA** and **AMD** GPUs.
+This guide walks through everything needed to run the ThinkExponential AILab deployments on **Windows with WSL2**, for both **NVIDIA** and **AMD** GPUs.
 
 ---
 
@@ -316,7 +316,27 @@ The script will:
 
 Example output for an NVIDIA system:
 ```
-=== GPU Detection for ailab ===
+###################################################################################
+#                                                                                 #
+#  _____ _     _       _    _____                                  _   _       _  #
+# |_   _| |   (_)     | |  |  ___|                                | | (_)     | | #
+#   | | | |__  _ _ __ | | _| |____  ___ __   ___  _ __   ___ _ __ | |_ _  __ _| | #
+#   | | | '_ \| | '_ \| |/ /  __\ \/ / '_ \ / _ \| '_ \ / _ \ '_ \| __| |/ _` | | #
+#   | | | | | | | | | |   <| |___>  <| |_) | (_) | | | |  __/ | | | |_| | (_| | | #
+#   \_/ |_| |_|_|_| |_|_|\_\____/_/\_\ .__/ \___/|_| |_|\___|_| |_|\__|_|\__,_|_| #
+#                                    | |                                          #
+#                                    |_|                                          #
+#                                                                                 #
+#   ___  _____ _           _                                                      #
+#  / _ \|_   _| |         | |                                                     #
+# / /_\ \ | | | |     __ _| |__                                                   #
+# |  _  | | | | |    / _` | '_ \                                                  #
+# | | | |_| |_| |___| (_| | |_) |                                                 #
+# \_| |_/\___/\_____/\__,_|_.__/                                                  #
+#                                                                                 #
+#   Local AI Model Deployments  ::  GPU Detection                                 #
+#                                                                                 #
+###################################################################################
 
 NVIDIA GPU(s) detected:
   • NVIDIA GeForce RTX 4090 | 24564 MiB | Driver 535.129.03

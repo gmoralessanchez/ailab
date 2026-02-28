@@ -1,4 +1,4 @@
-# Ollama + Open WebUI
+# ThinkExponential AILab — Ollama + Open WebUI
 
 Runs [Ollama](https://ollama.com/) as a local LLM server with [Open WebUI](https://github.com/open-webui/open-webui) as a browser-based chat interface. Compatible with Windows + WSL2 on both AMD and NVIDIA GPUs.
 

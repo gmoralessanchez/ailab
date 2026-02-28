@@ -1,6 +1,6 @@
-name: ailab-ollama
+name: thinkexponential-ailab-ollama
 
-# Ollama + Open WebUI — NVIDIA GPU (CUDA)
+# ThinkExponential AILab — Ollama + Open WebUI — NVIDIA GPU (CUDA)
 #
 # Prerequisites (WSL2 + Windows):
 #   1. WSL2 with kernel 5.15+ (`wsl --update`)

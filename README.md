@@ -1,4 +1,28 @@
-# ailab
+# ThinkExponential AILab
+
+```
+###################################################################################
+#                                                                                 #
+#  _____ _     _       _    _____                                  _   _       _  #
+# |_   _| |   (_)     | |  |  ___|                                | | (_)     | | #
+#   | | | |__  _ _ __ | | _| |____  ___ __   ___  _ __   ___ _ __ | |_ _  __ _| | #
+#   | | | '_ \| | '_ \| |/ /  __\ \/ / '_ \ / _ \| '_ \ / _ \ '_ \| __| |/ _` | | #
+#   | | | | | | | | | |   <| |___>  <| |_) | (_) | | | |  __/ | | | |_| | (_| | | #
+#   \_/ |_| |_|_|_| |_|_|\_\____/_/\_\ .__/ \___/|_| |_|\___|_| |_|\__|_|\__,_|_| #
+#                                    | |                                          #
+#                                    |_|                                          #
+#                                                                                 #
+#   ___  _____ _           _                                                      #
+#  / _ \|_   _| |         | |                                                     #
+# / /_\ \ | | | |     __ _| |__                                                   #
+# |  _  | | | | |    / _` | '_ \                                                  #
+# | | | |_| |_| |___| (_| | |_) |                                                 #
+# \_| |_/\___/\_____/\__,_|_.__/                                                  #
+#                                                                                 #
+#   Local AI Model Deployments  ::  ThinkExponential                              #
+#                                                                                 #
+###################################################################################
+```
 
 Local AI model deployments using Docker. Supports the most popular open-source generative AI models and is compatible with **Windows + WSL2** on both **NVIDIA** and **AMD** GPUs.
 
@@ -89,7 +113,7 @@ See the **[docs/](docs/)** folder for detailed guides, or each deployment's `REA
 ## Repository structure
 
 ```
-ailab/
+thinkexponential-ailab/
 ├── docs/
 │   ├── README.md                      # Documentation index
 │   ├── environment-setup.md           # WSL2, Docker, NVIDIA, AMD setup guide

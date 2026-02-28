@@ -1,6 +1,6 @@
-name: ailab-ollama
+name: thinkexponential-ailab-ollama
 
-# Ollama + Open WebUI — AMD GPU (ROCm)
+# ThinkExponential AILab — Ollama + Open WebUI — AMD GPU (ROCm)
 #
 # Prerequisites (WSL2 + Windows):
 #   1. WSL2 with kernel 5.15+ (`wsl --update`)

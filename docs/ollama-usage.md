@@ -1,4 +1,4 @@
-# Ollama LLM Usage Guide
+# ThinkExponential AILab — Ollama LLM Usage Guide
 
 This guide covers how to pull, run, and interact with language models using [Ollama](https://ollama.com/) and [Open WebUI](https://github.com/open-webui/open-webui).
 

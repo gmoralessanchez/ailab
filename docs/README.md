@@ -1,4 +1,4 @@
-# Documentation
+# ThinkExponential AILab — Documentation
 
 Detailed guides for setting up and using the AI model deployments in this repository.
 

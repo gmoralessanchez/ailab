@@ -1,4 +1,4 @@
-# Stable Diffusion Usage Guide
+# ThinkExponential AILab — Stable Diffusion Usage Guide
 
 This guide covers how to generate images with [AUTOMATIC1111 Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) running locally in Docker.
 

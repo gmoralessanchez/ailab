@@ -1,6 +1,6 @@
-name: ailab-stable-diffusion
+name: thinkexponential-ailab-stable-diffusion
 
-# Stable Diffusion WebUI (AUTOMATIC1111) — CPU only
+# ThinkExponential AILab — Stable Diffusion WebUI (AUTOMATIC1111) — CPU only
 #
 # No GPU required. Image generation will be very slow (minutes per image).
 # Recommended for testing the interface or on low-resource machines.

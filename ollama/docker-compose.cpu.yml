@@ -1,6 +1,6 @@
-name: ailab-ollama
+name: thinkexponential-ailab-ollama
 
-# Ollama + Open WebUI — CPU only
+# ThinkExponential AILab — Ollama + Open WebUI — CPU only
 #
 # No GPU required. Suitable for testing or low-resource environments.
 # Performance will be significantly slower than GPU-accelerated deployments.

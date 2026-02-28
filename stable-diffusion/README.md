@@ -1,4 +1,4 @@
-# Stable Diffusion WebUI
+# ThinkExponential AILab — Stable Diffusion WebUI
 
 Runs [AUTOMATIC1111 Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) in a Docker container for local AI image generation. Compatible with Windows + WSL2 on both AMD and NVIDIA GPUs.
 
@@ -73,7 +73,7 @@ Download model files from [Hugging Face](https://huggingface.co/models?pipeline_
 
 ```bash
 # Find the volume mount path
-docker volume inspect ailab-stable-diffusion_sd_models
+docker volume inspect thinkexponential-ailab-stable-diffusion_sd_models
 
 # Or copy a model file directly into the container
 docker cp my-model.safetensors stable-diffusion-webui:/app/stable-diffusion-webui/models/Stable-diffusion/
