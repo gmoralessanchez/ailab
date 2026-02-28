@@ -31,9 +31,29 @@ This guide walks through everything needed to run the AI model deployments in th
 
 > CPU-only mode is available for both deployments but is significantly slower — suitable for testing only.
 
+### Windows host software
+
+The following must be installed or configured on the **Windows machine** before you start the WSL2 and Docker setup:
+
+| Software / Setting | Where to get it | Notes |
+|---|---|---|
+| **Hardware virtualization** | BIOS/UEFI settings | Required by WSL2. Look for "Intel VT-x", "AMD-V", or "SVM Mode" and enable it. |
+| **Docker Desktop 4.x+** | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/) | Easiest Docker option; includes Engine, Compose, and WSL2 integration. |
+| **Git for Windows** | [git-scm.com/download/win](https://git-scm.com/download/win) | Needed to clone this repository on Windows. Alternatively, clone inside WSL2 with `sudo apt-get install git`. |
+
+> **Docker Desktop vs Docker Engine:** Docker Desktop runs on Windows and exposes Docker inside WSL2 via integration. Docker Engine can alternatively be installed directly inside WSL2 (Option B in [Section 3](#3-install-docker)). **AMD GPU users should use Docker Engine** because Docker Desktop does not correctly expose `/dev/kfd` to containers, which prevents ROCm GPU access.
+
 ---
 
 ## 2. Enable WSL2 on Windows
+
+> **Before you begin — verify that hardware virtualization is enabled in BIOS/UEFI.**
+>
+> WSL2 and Docker Desktop both require CPU virtualization support.
+>
+> **To check:** Open **Task Manager** (`Ctrl+Shift+Esc`) → **Performance** tab → **CPU**. The line "Virtualization: **Enabled**" must appear.
+>
+> **If it shows "Disabled":** Reboot into your BIOS/UEFI settings (press Del, F2, or F10 during the power-on screen — the key varies by manufacturer). Enable the virtualization option — it may be labelled "Intel VT-x", "Intel Virtualization Technology", "AMD-V", or "SVM Mode". Save and reboot.
 
 Open **PowerShell as Administrator** and run:
 
@@ -78,6 +98,8 @@ Apply with `wsl --shutdown` then reopen WSL.
 ## 3. Install Docker
 
 ### Option A — Docker Desktop (easiest)
+
+> **Requirements:** Docker Desktop 4.x or later. Supported on Windows 11 (Home/Pro/Enterprise, 21H2+) and Windows 10 (Home/Pro/Enterprise, 21H2+, build 19044+). Hardware virtualization must be enabled (see [Section 2](#2-enable-wsl2-on-windows)).
 
 1. Download [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/).
 2. Install and open Docker Desktop.

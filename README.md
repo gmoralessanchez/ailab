@@ -59,11 +59,22 @@ Open **http://localhost:7860** to access the Stable Diffusion WebUI.
 
 ## Requirements
 
-- Windows 11 or Windows 10 (version 21H2+) with **WSL2**
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (with WSL2 backend) or Docker Engine inside WSL2
-- Compose V2 (`docker compose`)
-- **NVIDIA**: Driver ≥ 525 on Windows + NVIDIA Container Toolkit in WSL2
-- **AMD**: ROCm 6.x in WSL2 + supported GPU (RX 6000/7000 series or Instinct MI)
+### Windows host
+
+- Windows 11 (21H2+) or Windows 10 (21H2+, build 19044+)
+- Hardware virtualization enabled in BIOS/UEFI (Intel VT-x / AMD-V / SVM Mode)
+- [Docker Desktop 4.x+](https://www.docker.com/products/docker-desktop/) with WSL2 backend enabled **or** Docker Engine installed inside WSL2
+- [Git for Windows](https://git-scm.com/download/win) to clone this repository, **or** clone it inside WSL2 with `git clone`
+- **NVIDIA**: Driver ≥ 525 from [nvidia.com/drivers](https://www.nvidia.com/drivers/)
+- **AMD**: Adrenalin 23.x+ from [amd.com/support](https://www.amd.com/support)
+
+### Inside WSL2 (Ubuntu)
+
+- Compose V2 (`docker compose`) — included with Docker Desktop or the Docker Engine Compose plugin
+- **NVIDIA**: NVIDIA Container Toolkit (run `scripts/setup-wsl-nvidia.sh`)
+- **AMD**: ROCm 6.x + WSL2 kernel 5.15+ (run `scripts/setup-wsl-amd.sh`)
+
+> **AMD users:** Docker Engine inside WSL2 is recommended over Docker Desktop — Docker Desktop does not correctly expose `/dev/kfd` to containers, which prevents ROCm GPU access.
 
 See the **[docs/](docs/)** folder for detailed guides, or each deployment's `README.md` for quick-reference instructions.
 
