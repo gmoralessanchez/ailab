@@ -27,7 +27,12 @@ Pull any model from [ollama.com/library](https://ollama.com/library) after the s
 ### NVIDIA (WSL2 on Windows)
 1. Update WSL kernel: `wsl --update`
 2. Install the latest NVIDIA driver on **Windows** (≥525) from [nvidia.com/drivers](https://www.nvidia.com/drivers/)
-3. Inside WSL2, install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html):
+3. Inside WSL2, run the included setup script to install the NVIDIA Container Toolkit and configure Docker:
+   ```bash
+   chmod +x scripts/setup-wsl-nvidia.sh
+   ./scripts/setup-wsl-nvidia.sh
+   ```
+   Or install manually:
    ```bash
    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
    curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
@@ -40,9 +45,14 @@ Pull any model from [ollama.com/library](https://ollama.com/library) after the s
 4. Verify: `nvidia-smi` should show your GPU
 
 ### AMD (WSL2 on Windows)
-1. Update WSL kernel: `wsl --update`
-2. Install ROCm 6.x inside WSL2 following the [ROCm installation guide](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/)
-3. Add your user to the `render` and `video` groups:
+1. Update WSL kernel to 5.15+: `wsl --update`
+2. Install ROCm 6.x inside WSL2 using the included setup script:
+   ```bash
+   chmod +x scripts/setup-wsl-amd.sh
+   ./scripts/setup-wsl-amd.sh
+   ```
+   Or follow the [ROCm installation guide](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/) manually.
+3. Add your user to the `render` and `video` groups (the script does this automatically):
    ```bash
    sudo usermod -aG render,video $USER
    ```
@@ -50,6 +60,7 @@ Pull any model from [ollama.com/library](https://ollama.com/library) after the s
 5. Check that `/dev/kfd` and `/dev/dri` are present
 
 > **Note:** ROCm on WSL2 is actively developing. Check the [AMD ROCm compatibility matrix](https://rocm.docs.amd.com/en/latest/compatibility/compatibility-matrix.html) to confirm your GPU is supported.
+> **Note:** Docker Engine inside WSL2 is recommended over Docker Desktop for AMD GPU access — Docker Desktop may not correctly expose `/dev/kfd` to containers.
 
 ## Quick start
 

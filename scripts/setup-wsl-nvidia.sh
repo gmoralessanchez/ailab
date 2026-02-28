@@ -26,6 +26,14 @@ if ! grep -qi "microsoft" /proc/version 2>/dev/null; then
   [[ "${response}" =~ ^[Yy]$ ]] || exit 1
 fi
 
+# --- Check Docker is installed ---
+if ! command -v docker &>/dev/null; then
+  echo "ERROR: Docker is not installed."
+  echo "       Install Docker Desktop (with WSL2 integration) or Docker Engine inside WSL2 first."
+  echo "       See: https://docs.docker.com/engine/install/ubuntu/"
+  exit 1
+fi
+
 # --- Check nvidia-smi is accessible (driver must be installed on Windows) ---
 if ! command -v nvidia-smi &>/dev/null; then
   echo "ERROR: nvidia-smi not found."

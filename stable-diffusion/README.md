@@ -24,17 +24,29 @@ Place `.safetensors` or `.ckpt` model files in the `sd_models` Docker volume, or
 ### NVIDIA (WSL2 on Windows)
 1. Update WSL kernel: `wsl --update`
 2. Install NVIDIA driver ≥525 on **Windows** from [nvidia.com/drivers](https://www.nvidia.com/drivers/)
-3. Install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) inside WSL2 (see [ollama/README.md](../ollama/README.md) for detailed steps)
+3. Inside WSL2, run the included setup script to install the NVIDIA Container Toolkit and configure Docker:
+   ```bash
+   chmod +x scripts/setup-wsl-nvidia.sh
+   ./scripts/setup-wsl-nvidia.sh
+   ```
+   (See [ollama/README.md](../ollama/README.md) for the manual installation steps.)
 4. Minimum 4 GB VRAM (6 GB+ recommended)
 
 ### AMD (WSL2 on Windows)
-1. Update WSL kernel: `wsl --update`
-2. Install ROCm 6.x inside WSL2 following the [ROCm installation guide](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/)
-3. Add your user to `render` and `video` groups:
+1. Update WSL kernel to 5.15+: `wsl --update`
+2. Install ROCm 6.x inside WSL2 using the included setup script:
+   ```bash
+   chmod +x scripts/setup-wsl-amd.sh
+   ./scripts/setup-wsl-amd.sh
+   ```
+   Or follow the [ROCm installation guide](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/) manually.
+3. Add your user to `render` and `video` groups (the script does this automatically):
    ```bash
    sudo usermod -aG render,video $USER
    ```
 4. Supported GPUs: RX 6000/7000 series (gfx1030+), Instinct MI series — check the [AMD ROCm compatibility matrix](https://rocm.docs.amd.com/en/latest/compatibility/compatibility-matrix.html)
+
+> **Note:** Docker Engine inside WSL2 is recommended over Docker Desktop for AMD GPU access — Docker Desktop may not correctly expose `/dev/kfd` to containers.
 
 ## Quick start
 

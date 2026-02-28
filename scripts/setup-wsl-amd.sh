@@ -33,13 +33,35 @@ if [[ "${ID}" != "ubuntu" ]]; then
   echo "WARNING: This script is designed for Ubuntu. Adjust package manager commands as needed."
 fi
 
+# --- Check Docker is installed ---
+if ! command -v docker &>/dev/null; then
+  echo "ERROR: Docker is not installed."
+  echo "       Install Docker Engine inside WSL2 before running this script."
+  echo "       See: https://docs.docker.com/engine/install/ubuntu/"
+  echo "       NOTE: Docker Desktop may not correctly expose /dev/kfd to containers."
+  exit 1
+fi
+
+# --- Check WSL2 kernel version (ROCm requires 5.15+) ---
+KERNEL_VERSION=$(uname -r)
+KERNEL_MAJOR=$(echo "${KERNEL_VERSION}" | cut -d. -f1)
+KERNEL_MINOR=$(echo "${KERNEL_VERSION}" | cut -d. -f2)
+if [[ "${KERNEL_MAJOR}" -lt 5 ]] || ( [[ "${KERNEL_MAJOR}" -eq 5 ]] && [[ "${KERNEL_MINOR}" -lt 15 ]] ); then
+  echo "ERROR: ROCm on WSL2 requires kernel 5.15 or higher."
+  echo "       Detected: ${KERNEL_VERSION}"
+  echo "       Run 'wsl --update' from Windows PowerShell, then restart WSL and re-run this script."
+  exit 1
+fi
+echo "WSL2 kernel ${KERNEL_VERSION} — OK (5.15+ required for ROCm)"
+echo ""
+
 # --- Install ROCm ---
 echo ""
 echo "Installing ROCm 6.x..."
 
 # Install prerequisites
 sudo apt-get update -y
-sudo apt-get install -y wget gnupg2 software-properties-common
+sudo apt-get install -y wget gnupg2 software-properties-common lsb-release
 
 # Download and install ROCm repo key
 wget -qO - https://repo.radeon.com/rocm/rocm.gpg.key \

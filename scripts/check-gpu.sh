@@ -16,6 +16,18 @@ AMD_FOUND=false
 echo "=== GPU Detection for ailab ==="
 echo ""
 
+# --- WSL2 kernel version ---
+if grep -qi "microsoft" /proc/version 2>/dev/null; then
+  KERNEL_VERSION=$(uname -r)
+  echo "WSL2 kernel: ${KERNEL_VERSION}"
+  KERNEL_MAJOR=$(echo "${KERNEL_VERSION}" | cut -d. -f1)
+  KERNEL_MINOR=$(echo "${KERNEL_VERSION}" | cut -d. -f2)
+  if [[ "${KERNEL_MAJOR}" -lt 5 ]] || ( [[ "${KERNEL_MAJOR}" -eq 5 ]] && [[ "${KERNEL_MINOR}" -lt 15 ]] ); then
+    echo "WARNING: Kernel 5.15+ is required for AMD ROCm. Run 'wsl --update' from Windows PowerShell."
+  fi
+  echo ""
+fi
+
 # --- Check for NVIDIA GPU ---
 if command -v nvidia-smi &>/dev/null; then
   echo "NVIDIA GPU(s) detected:"
@@ -58,6 +70,10 @@ if command -v docker &>/dev/null; then
     echo "NVIDIA Container Runtime: configured ✓"
   else
     echo "NVIDIA Container Runtime: not configured (run scripts/setup-wsl-nvidia.sh)"
+  fi
+  if $AMD_FOUND; then
+    echo "NOTE (AMD): Docker Engine inside WSL2 is recommended over Docker Desktop"
+    echo "            to ensure /dev/kfd is correctly exposed to containers."
   fi
 else
   echo "Docker: not found — install Docker to use this project"
