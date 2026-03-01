@@ -4,27 +4,18 @@ Runs [AUTOMATIC1111 Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/sta
 
 ## Supported models
 
-Place `.safetensors` or `.ckpt` model files in the `sd_models` Docker volume, or download them through the WebUI. Popular open-source models:
+This WebUI is powered by [AUTOMATIC1111 Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui). For the full list of supported model formats and architectures, refer to the [AUTOMATIC1111 repository](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
 
-| Model | Source | Notes |
-|---|---|---|
-| Stable Diffusion 3.5 | [Hugging Face](https://huggingface.co/stabilityai/stable-diffusion-3.5-large) | Latest Stability AI release |
-| Stable Diffusion XL (SDXL) | [Hugging Face](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) | High-res, versatile |
-| FLUX.1 [dev] | [Hugging Face](https://huggingface.co/black-forest-labs/FLUX.1-dev) | State-of-the-art image quality |
-| FLUX.1 [schnell] | [Hugging Face](https://huggingface.co/black-forest-labs/FLUX.1-schnell) | Faster FLUX variant |
-| Stable Diffusion 2.1 | [Hugging Face](https://huggingface.co/stabilityai/stable-diffusion-2-1) | Reliable classic |
+Place `.safetensors` or `.ckpt` model files in the `sd_models` Docker volume, or download them through the WebUI.
 
 ### Pre-installed models (CPU / OpenVINO image)
 
-The CPU Docker image ships with three SD 1.5-based checkpoints so you can start generating immediately:
+The CPU Docker image ships with two SD 1.5-based checkpoints so you can start generating immediately:
 
 | Model | Style | Size |
 |---|---|---|
-| `v1-5-pruned-emaonly` | Generic | ~4 GB — lightweight baseline, useful for testing |
 | `deliberate_v2` | Photorealistic | ~2 GB — high quality portraits and scenes |
 | `dreamshaper_8` | Versatile | ~2 GB — good at both artistic and photorealistic |
-
-> **Tip:** Switch from the default `v1-5-pruned-emaonly` to **Deliberate v2** or **DreamShaper 8** via the checkpoint dropdown (top-left of the WebUI) for dramatically better results.
 
 ## Prerequisites
 
@@ -120,7 +111,7 @@ After adding a model, click **🔄 Refresh** next to the checkpoint dropdown in 
 
 1. **Select "Accelerate with OpenVINO"** from the Script dropdown at the bottom of the txt2img / img2img tab
 2. **Set OpenVINO Device to `CPU`** in the script options
-3. **Use a better model** — switch from `v1-5-pruned-emaonly` to `deliberate_v2` or `dreamshaper_8` via the checkpoint dropdown (top-left)
+3. **Use a better model** — select `deliberate_v2` or `dreamshaper_8` via the checkpoint dropdown (top-left)
 4. **Recommended settings:**
    - Steps: **20–30** (more steps = better quality but slower)
    - Sampler: **DPM++ 2M Karras** or **Euler a**
