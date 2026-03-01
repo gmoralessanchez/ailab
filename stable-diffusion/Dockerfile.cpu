@@ -21,6 +21,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends gosu \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -m -s /bin/bash sduser && mkdir -p /app && chown sduser:sduser /app
 
+# Copy the entrypoint script (must be done as root before USER switch)
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 WORKDIR /app
 USER sduser
 
@@ -68,10 +72,6 @@ RUN mkdir -p repositories && \
 # Environment variables recommended by the OpenVINO wiki
 ENV PYTORCH_TRACING_MODE=TORCHFX
 ENV COMMANDLINE_ARGS="--listen --skip-torch-cuda-test --precision full --no-half --api"
-
-# Copy the entrypoint script that fixes volume permissions then drops to sduser
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 7860
 
