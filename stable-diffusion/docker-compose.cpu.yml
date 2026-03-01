@@ -29,7 +29,7 @@ services:
       - sd_extensions:/app/stable-diffusion-webui/extensions
     environment:
       - PYTORCH_TRACING_MODE=TORCHFX
-      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --precision full --no-half --api
+      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --precision full --no-half --api --enable-insecure-extension-access
     restart: unless-stopped
 
 volumes:

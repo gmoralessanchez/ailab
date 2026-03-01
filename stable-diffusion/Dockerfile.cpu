@@ -54,6 +54,17 @@ RUN if [ -f requirements_versions.txt ]; then \
         pip install --no-cache-dir -r requirements.txt; \
     fi
 
+# Pin huggingface_hub < 0.24 — diffusers 0.23.0 imports cached_download which
+# was removed in 0.24+. This keeps the OpenVINO accelerate script working.
+RUN pip install --no-cache-dir "huggingface_hub<0.24"
+
+# Patch openvino_accelerate.py — add None-guards for the SDXL refiner model.
+# The refiner dropdown can default to the only available (non-XL) checkpoint
+# instead of "None", which leaves shared.sd_refiner_model as None and causes
+# an AttributeError during inference.
+COPY --chown=sduser:sduser patch_openvino.py /tmp/patch_openvino.py
+RUN python3 /tmp/patch_openvino.py
+
 # Pre-clone the repositories that launch.py fetches at runtime.
 # The original Stability-AI/stablediffusion repo is no longer public,
 # so we use a public fork that preserves the required commit.
@@ -69,9 +80,17 @@ RUN mkdir -p repositories && \
     git clone https://github.com/salesforce/BLIP.git                   repositories/BLIP && \
     git -C repositories/BLIP checkout 48211a1594f1321b00f14c9f7a5b4813144b2fb9
 
+# Download higher-quality models into the checkpoint directory.
+# SD 1.5 is already provided by the repo; we add two community models that
+# produce dramatically better results.
+RUN curl -L --progress-bar -o models/Stable-diffusion/deliberate_v2.safetensors \
+      "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v2.safetensors" && \
+    curl -L --progress-bar -o models/Stable-diffusion/dreamshaper_8.safetensors \
+      "https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_8_pruned.safetensors"
+
 # Environment variables recommended by the OpenVINO wiki
 ENV PYTORCH_TRACING_MODE=TORCHFX
-ENV COMMANDLINE_ARGS="--listen --skip-torch-cuda-test --precision full --no-half --api"
+ENV COMMANDLINE_ARGS="--listen --skip-torch-cuda-test --precision full --no-half --api --enable-insecure-extension-access"
 
 EXPOSE 7860
 

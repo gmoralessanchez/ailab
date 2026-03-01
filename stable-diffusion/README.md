@@ -14,6 +14,18 @@ Place `.safetensors` or `.ckpt` model files in the `sd_models` Docker volume, or
 | FLUX.1 [schnell] | [Hugging Face](https://huggingface.co/black-forest-labs/FLUX.1-schnell) | Faster FLUX variant |
 | Stable Diffusion 2.1 | [Hugging Face](https://huggingface.co/stabilityai/stable-diffusion-2-1) | Reliable classic |
 
+### Pre-installed models (CPU / OpenVINO image)
+
+The CPU Docker image ships with three SD 1.5-based checkpoints so you can start generating immediately:
+
+| Model | Style | Size |
+|---|---|---|
+| `v1-5-pruned-emaonly` | Generic | ~4 GB — lightweight baseline, useful for testing |
+| `deliberate_v2` | Photorealistic | ~2 GB — high quality portraits and scenes |
+| `dreamshaper_8` | Versatile | ~2 GB — good at both artistic and photorealistic |
+
+> **Tip:** Switch from the default `v1-5-pruned-emaonly` to **Deliberate v2** or **DreamShaper 8** via the checkpoint dropdown (top-left of the WebUI) for dramatically better results.
+
 ## Prerequisites
 
 ### All platforms
@@ -87,6 +99,43 @@ docker cp my-model.safetensors stable-diffusion-webui:/app/stable-diffusion-webu
 ```
 
 After copying, click **Refresh** in the WebUI model selector.
+
+### Adding models to the CPU container
+
+The `sd_models` Docker volume mounts to `models/Stable-diffusion/` inside the container.
+You can add models without rebuilding:
+
+```bash
+# Download from Hugging Face (example: Realistic Vision v5.1)
+docker exec stable-diffusion-webui curl -L -o models/Stable-diffusion/realisticVision_v51.safetensors \
+  "https://huggingface.co/SG161222/Realistic_Vision_V5.1_noVAE/resolve/main/Realistic_Vision_V5.1_fp16-no-ema.safetensors"
+
+# Or copy a local file into the running container
+docker cp my-model.safetensors stable-diffusion-webui:/app/stable-diffusion-webui/models/Stable-diffusion/
+```
+
+After adding a model, click **🔄 Refresh** next to the checkpoint dropdown in the WebUI (no restart needed).
+
+## Tips for better results on CPU (OpenVINO)
+
+1. **Select "Accelerate with OpenVINO"** from the Script dropdown at the bottom of the txt2img / img2img tab
+2. **Set OpenVINO Device to `CPU`** in the script options
+3. **Use a better model** — switch from `v1-5-pruned-emaonly` to `deliberate_v2` or `dreamshaper_8` via the checkpoint dropdown (top-left)
+4. **Recommended settings:**
+   - Steps: **20–30** (more steps = better quality but slower)
+   - Sampler: **DPM++ 2M Karras** or **Euler a**
+   - CFG Scale: **7**
+   - Resolution: **512×512** (SD 1.5 models) or **768×768** max
+5. **First inference is slow** (~2-5 min) because OpenVINO compiles the model. Subsequent runs with the same resolution/settings are much faster due to caching
+6. **Use descriptive prompts:**
+   ```
+   photo of a golden retriever in a sunlit meadow, shallow depth of field,
+   professional photography, 8k, highly detailed
+   ```
+7. **Use negative prompts** to avoid common artifacts:
+   ```
+   blurry, low quality, deformed, ugly, bad anatomy, watermark, text
+   ```
 
 ## API access
 
