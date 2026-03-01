@@ -16,7 +16,10 @@ name: thinkexponential-ailab-stable-diffusion
 
 services:
   stable-diffusion-webui:
-    image: universonic/stable-diffusion-webui:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    image: thinkexponential-ailab/sd-webui-openvino:cpu
     container_name: stable-diffusion-webui
     ports:
       - "7860:7860"
@@ -25,9 +28,8 @@ services:
       - sd_outputs:/app/stable-diffusion-webui/outputs
       - sd_extensions:/app/stable-diffusion-webui/extensions
     environment:
-      # Skip CUDA/GPU detection so the container starts on CPU-only hosts
       - PYTORCH_TRACING_MODE=TORCHFX
-      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --use-cpu all --precision full --no-half --api
+      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --precision full --no-half --api
     restart: unless-stopped
 
 volumes:

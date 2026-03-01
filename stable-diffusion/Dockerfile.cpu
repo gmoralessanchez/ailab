@@ -1,0 +1,80 @@
+###############################################################################
+# ThinkExponential AILab — Stable Diffusion WebUI (OpenVINO) — CPU-only
+#
+# Custom image based on Python 3.11 that builds the OpenVINO fork of
+# AUTOMATIC1111's Stable Diffusion WebUI for Intel CPU silicon.
+#
+# Reference:
+#   https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon
+###############################################################################
+FROM python:3.11-slim
+
+# Install OS-level dependencies required by the WebUI and its extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git wget curl libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 \
+        build-essential libffi-dev libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# webui.sh refuses to run as root — create a non-root user
+# gosu is used by the entrypoint to drop from root → sduser after fixing volume perms
+RUN apt-get update && apt-get install -y --no-install-recommends gosu \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -m -s /bin/bash sduser && mkdir -p /app && chown sduser:sduser /app
+
+WORKDIR /app
+USER sduser
+
+# Clone the OpenVINO fork of the Stable Diffusion WebUI
+RUN git clone https://github.com/openvinotoolkit/stable-diffusion-webui.git
+
+WORKDIR /app/stable-diffusion-webui
+
+# Create the venv at the location webui.sh expects (venv_dir defaults to "venv")
+RUN python -m venv venv
+ENV VIRTUAL_ENV=/app/stable-diffusion-webui/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Pin pip < 24.1 (torchsde 0.2.5 has invalid metadata rejected by newer pip)
+# and ensure setuptools + wheel are present (needed by CLIP's setup.py)
+RUN pip install --no-cache-dir "pip<24.1" setuptools wheel
+
+# Pin torch/torchvision to versions compatible with basicsr 1.4.2
+# (torchvision ≥ 0.18 removed torchvision.transforms.functional_tensor)
+RUN pip install --no-cache-dir torch==2.1.2+cpu torchvision==0.16.2+cpu \
+    --index-url https://download.pytorch.org/whl/cpu
+
+# Pre-install Python requirements so the first launch is faster.
+RUN if [ -f requirements_versions.txt ]; then \
+        pip install --no-cache-dir -r requirements_versions.txt; \
+    elif [ -f requirements.txt ]; then \
+        pip install --no-cache-dir -r requirements.txt; \
+    fi
+
+# Pre-clone the repositories that launch.py fetches at runtime.
+# The original Stability-AI/stablediffusion repo is no longer public,
+# so we use a public fork that preserves the required commit.
+RUN mkdir -p repositories && \
+    git clone https://github.com/andrewmcwatters/stablediffusion.git repositories/stable-diffusion-stability-ai && \
+    git -C repositories/stable-diffusion-stability-ai checkout cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf && \
+    git clone https://github.com/Stability-AI/generative-models.git    repositories/generative-models && \
+    git -C repositories/generative-models checkout 45c443b316737a4ab6e40413d7794a7f5657c19f && \
+    git clone https://github.com/crowsonkb/k-diffusion.git             repositories/k-diffusion && \
+    git -C repositories/k-diffusion checkout ab527a9a6d347f364e3d185ba6d714e22d80cb3c && \
+    git clone https://github.com/sczhou/CodeFormer.git                 repositories/CodeFormer && \
+    git -C repositories/CodeFormer checkout c5b4593074ba6214284d6acd5f1719b6c5d739af && \
+    git clone https://github.com/salesforce/BLIP.git                   repositories/BLIP && \
+    git -C repositories/BLIP checkout 48211a1594f1321b00f14c9f7a5b4813144b2fb9
+
+# Environment variables recommended by the OpenVINO wiki
+ENV PYTORCH_TRACING_MODE=TORCHFX
+ENV COMMANDLINE_ARGS="--listen --skip-torch-cuda-test --precision full --no-half --api"
+
+# Copy the entrypoint script that fixes volume permissions then drops to sduser
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE 7860
+
+# The entrypoint runs as root to chown volume mounts, then exec's webui.sh as sduser
+USER root
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
