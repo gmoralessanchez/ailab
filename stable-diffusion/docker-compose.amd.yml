@@ -32,7 +32,7 @@ services:
       - video
       - render
     ports:
-      - "7860:7860"
+      - "127.0.0.1:7860:7860"
     volumes:
       - sd_models:/app/stable-diffusion-webui/models
       - sd_outputs:/app/stable-diffusion-webui/outputs

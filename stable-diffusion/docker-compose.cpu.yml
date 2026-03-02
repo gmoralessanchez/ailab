@@ -22,14 +22,16 @@ services:
     image: thinkexponential-ailab/sd-webui-openvino:cpu
     container_name: stable-diffusion-webui
     ports:
-      - "7860:7860"
+      - "127.0.0.1:7860:7860"  # Bind to localhost only — do not expose to LAN without additional access controls
     volumes:
       - sd_models:/app/stable-diffusion-webui/models
       - sd_outputs:/app/stable-diffusion-webui/outputs
       - sd_extensions:/app/stable-diffusion-webui/extensions
     environment:
       - PYTORCH_TRACING_MODE=TORCHFX
-      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --precision full --no-half --api --enable-insecure-extension-access
+      # Note: --enable-insecure-extension-access is intentionally omitted to reduce risk from untrusted extensions.
+      # Add it back only in a trusted, access-controlled environment.
+      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --use-cpu all --precision full --no-half --api
     restart: unless-stopped
 
 volumes:

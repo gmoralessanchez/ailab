@@ -83,14 +83,14 @@ RUN mkdir -p repositories && \
 # Download higher-quality models into the checkpoint directory.
 # SD 1.5 is already provided by the repo; we add two community models that
 # produce dramatically better results.
-RUN curl -L --progress-bar -o models/Stable-diffusion/deliberate_v2.safetensors \
+RUN curl -L --fail --retry 3 --retry-all-errors --progress-bar -o models/Stable-diffusion/deliberate_v2.safetensors \
       "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v2.safetensors" && \
-    curl -L --progress-bar -o models/Stable-diffusion/dreamshaper_8.safetensors \
+    curl -L --fail --retry 3 --retry-all-errors --progress-bar -o models/Stable-diffusion/dreamshaper_8.safetensors \
       "https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_8_pruned.safetensors"
 
 # Environment variables recommended by the OpenVINO wiki
 ENV PYTORCH_TRACING_MODE=TORCHFX
-ENV COMMANDLINE_ARGS="--listen --skip-torch-cuda-test --precision full --no-half --api --enable-insecure-extension-access"
+ENV COMMANDLINE_ARGS="--listen --skip-torch-cuda-test --use-cpu all --precision full --no-half --api"
 
 EXPOSE 7860
 

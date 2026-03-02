@@ -21,7 +21,7 @@ services:
     image: universonic/stable-diffusion-webui:latest
     container_name: stable-diffusion-webui
     ports:
-      - "7860:7860"
+      - "127.0.0.1:7860:7860"
     volumes:
       - sd_models:/app/stable-diffusion-webui/models
       - sd_outputs:/app/stable-diffusion-webui/outputs
