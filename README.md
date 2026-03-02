@@ -24,7 +24,7 @@
 ###################################################################################
 ```
 
-Local AI model deployments using Docker. Supports the most popular open-source generative AI models and is compatible with **Windows + WSL2** on both **NVIDIA** and **AMD** GPUs.
+Local AI model deployments using Docker. Supports the most popular open-source generative AI models and is compatible with **Windows + WSL2** on both **NVIDIA** and **AMD** GPUs, and **CPU**.
 
 ## Deployments
 
@@ -134,3 +134,49 @@ thinkexponential-ailab/
     ├── setup-wsl-nvidia.sh            # Install NVIDIA Container Toolkit in WSL2
     └── setup-wsl-amd.sh              # Install AMD ROCm in WSL2
 ```
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+
+> **Note:** This license covers only the code, scripts, and documentation in this repository. AI models referenced or used by this project have their own licenses. Please review the license of any AI model before use.
+
+## Contributing
+
+Contributions are welcome. Please read:
+
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [SUPPORT.md](SUPPORT.md)
+- [SECURITY.md](SECURITY.md)
+- [CHANGELOG.md](CHANGELOG.md)
+
+## Credits
+
+### Core projects and upstream repositories
+
+- [ollama/ollama](https://github.com/ollama/ollama) — local LLM runtime used by the Ollama deployments.
+- [open-webui/open-webui](https://github.com/open-webui/open-webui) — chat UI used with Ollama.
+- [AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui) — upstream Stable Diffusion WebUI project.
+- [openvinotoolkit/stable-diffusion-webui](https://github.com/openvinotoolkit/stable-diffusion-webui) — OpenVINO-focused fork used by the CPU deployment path.
+- [andrewmcwatters/stablediffusion](https://github.com/andrewmcwatters/stablediffusion) — repository used in the CPU Docker build path.
+- [Stability-AI/generative-models](https://github.com/Stability-AI/generative-models) — upstream dependency used in the CPU Docker build path.
+- [crowsonkb/k-diffusion](https://github.com/crowsonkb/k-diffusion) — upstream dependency used in the CPU Docker build path.
+- [sczhou/CodeFormer](https://github.com/sczhou/CodeFormer) — upstream dependency used in the CPU Docker build path.
+- [salesforce/BLIP](https://github.com/salesforce/BLIP) — upstream dependency used in the CPU Docker build path.
+
+### Runtime images
+
+- [ollama/ollama](https://hub.docker.com/r/ollama/ollama) — container image used for Ollama services.
+- [universonic/stable-diffusion-webui](https://hub.docker.com/r/universonic/stable-diffusion-webui) — container image used for NVIDIA and AMD Stable Diffusion deployments.
+
+### Toolchain and model sources
+
+- [Docker](https://www.docker.com/) — container platform for all local deployments.
+- [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-container-toolkit) — NVIDIA GPU container runtime support.
+- [ROCm](https://github.com/ROCm/ROCm) — AMD GPU compute stack used by AMD deployment paths.
+- [OpenVINO](https://github.com/openvinotoolkit/openvino) — CPU acceleration framework used by the CPU Stable Diffusion path.
+- [Hugging Face](https://huggingface.co/) — model hosting source used in setup and examples.
+- [CivitAI](https://civitai.com/) — community model source referenced in usage guidance.
+
+Credits are provided for attribution and transparency. Each third-party project, image, model, and service is governed by its own license and terms of use.

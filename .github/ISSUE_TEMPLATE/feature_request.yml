@@ -1,0 +1,46 @@
+name: Feature request
+description: Suggest an improvement for deployment flows, docs, or developer experience
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        Please keep requests focused and practical.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What limitation are you facing?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the change you want
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional alternatives or workarounds tried
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impacted area(s)
+      options:
+        - label: Ollama deployment
+        - label: Stable Diffusion deployment
+        - label: NVIDIA path
+        - label: AMD path
+        - label: CPU-only path
+        - label: Documentation
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Links, logs, screenshots, or references
