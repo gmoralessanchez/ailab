@@ -55,6 +55,7 @@ No additional prerequisites beyond Docker. The compose file sets the OpenVINO-co
 - `--skip-torch-cuda-test` — bypasses the GPU detection that would otherwise prevent startup on CPU-only hosts
 - `--precision full --no-half` — disables half-precision arithmetic, required for CPU inference
 - `PYTORCH_TRACING_MODE=TORCHFX` — enables OpenVINO acceleration via `torch.compile`
+- `--enable-insecure-extension-access` — allows WebUI extensions broader access to internal APIs; this is enabled for compatibility with common extensions and assumes you are running on a trusted local network and not exposing the WebUI directly to the internet
 
 > **Note:** Image generation on CPU is very slow (minutes per image). This mode is intended for testing the interface or on Intel CPU-only machines. See the [Intel Silicon installation guide](https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon) for more details.
 
