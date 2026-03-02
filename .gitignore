@@ -1,0 +1,27 @@
+# Model data and downloaded weights (can be large)
+models/
+outputs/
+*.safetensors
+*.ckpt
+*.bin
+*.pt
+*.pth
+
+# Docker volumes and local data
+data/
+volumes/
+
+# Environment files with secrets
+.env
+.env.local
+*.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,46 @@
+name: thinkexponential-ailab-ollama
+
+# ThinkExponential AILab — Ollama + Open WebUI — CPU only
+#
+# No GPU required. Suitable for testing or low-resource environments.
+# Performance will be significantly slower than GPU-accelerated deployments.
+#
+# Usage:
+#   docker compose -f docker-compose.cpu.yml up -d
+#
+# Pull a model (after containers are running):
+#   docker exec -it ollama ollama pull llama3.2        # smaller model recommended for CPU
+#   docker exec -it ollama ollama pull mistral
+#   docker exec -it ollama ollama pull gemma3:2b
+#   docker exec -it ollama ollama pull phi4
+#
+# Open WebUI is available at http://localhost:3000
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    depends_on:
+      - ollama
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - open_webui_data:/app/backend/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  open_webui_data:

@@ -1,0 +1,40 @@
+name: thinkexponential-ailab-stable-diffusion
+
+# ThinkExponential AILab — Stable Diffusion WebUI (AUTOMATIC1111) — Intel CPU / OpenVINO
+#
+# No GPU required. Runs on Intel CPU silicon using OpenVINO acceleration.
+# Image generation will be slow (minutes per image).
+# Recommended for testing the interface or on Intel CPU-only machines.
+#
+# References:
+#   https://github.com/openvinotoolkit/stable-diffusion-webui/wiki/Installation-on-Intel-Silicon
+#
+# Usage:
+#   docker compose -f docker-compose.cpu.yml up -d
+#
+# WebUI is available at http://localhost:7860
+
+services:
+  stable-diffusion-webui:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    image: thinkexponential-ailab/sd-webui-openvino:cpu
+    container_name: stable-diffusion-webui
+    ports:
+      - "127.0.0.1:7860:7860"  # Bind to localhost only — do not expose to LAN without additional access controls
+    volumes:
+      - sd_models:/app/stable-diffusion-webui/models
+      - sd_outputs:/app/stable-diffusion-webui/outputs
+      - sd_extensions:/app/stable-diffusion-webui/extensions
+    environment:
+      - PYTORCH_TRACING_MODE=TORCHFX
+      # Note: --enable-insecure-extension-access is intentionally omitted to reduce risk from untrusted extensions.
+      # Add it back only in a trusted, access-controlled environment.
+      - COMMANDLINE_ARGS=--listen --skip-torch-cuda-test --use-cpu all --precision full --no-half --api
+    restart: unless-stopped
+
+volumes:
+  sd_models:
+  sd_outputs:
+  sd_extensions:

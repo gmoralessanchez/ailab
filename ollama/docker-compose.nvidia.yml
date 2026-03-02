@@ -1,0 +1,56 @@
+name: thinkexponential-ailab-ollama
+
+# ThinkExponential AILab — Ollama + Open WebUI — NVIDIA GPU (CUDA)
+#
+# Prerequisites (WSL2 + Windows):
+#   1. WSL2 with kernel 5.15+ (`wsl --update`)
+#   2. NVIDIA driver 525+ installed on Windows (not inside WSL)
+#   3. NVIDIA Container Toolkit inside WSL2:
+#        https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+#   4. Docker Desktop with "Use the WSL 2 based engine" enabled, OR Docker Engine in WSL2
+#
+# Usage:
+#   docker compose -f docker-compose.nvidia.yml up -d
+#
+# Pull a model (after containers are running):
+#   docker exec -it ollama ollama pull llama3.3
+#   docker exec -it ollama ollama pull mistral
+#   docker exec -it ollama ollama pull gemma3
+#   docker exec -it ollama ollama pull deepseek-r1
+#   docker exec -it ollama ollama pull qwen2.5
+#   docker exec -it ollama ollama pull phi4
+#
+# Open WebUI is available at http://localhost:3000
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    depends_on:
+      - ollama
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - open_webui_data:/app/backend/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  open_webui_data:
