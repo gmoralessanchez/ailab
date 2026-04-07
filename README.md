@@ -32,6 +32,7 @@ Local AI model deployments using Docker. Supports the most popular open-source g
 |---|---|---|
 | [ollama/](ollama/) | Llama 3.3, Mistral, Gemma 3, DeepSeek-R1, Qwen 2.5, Phi-4, CodeLlama, … | 3000 (WebUI), 11434 (API) |
 | [stable-diffusion/](stable-diffusion/) | SD 3.5, SDXL, FLUX.1, SD 2.1 | 7860 |
+| [moneyprinter/](moneyprinter/) | AI Short Video Generation (MoneyPrinterTurbo) | 8501 (WebUI), 8080 (API) |
 
 ## Quick start
 
@@ -81,6 +82,18 @@ docker compose -f stable-diffusion/docker-compose.cpu.yml up -d
 
 Open **http://localhost:7860** to access the Stable Diffusion WebUI.
 
+#### Short video generation with MoneyPrinterTurbo
+
+```bash
+# 1. Edit the config with your LLM + video API keys
+nano moneyprinter/config.toml
+
+# 2. Build and start (CPU only — no GPU required)
+docker compose -f moneyprinter/docker-compose.cpu.yml up -d
+```
+
+Open **http://localhost:8501** for the WebUI or **http://localhost:8080/docs** for the REST API.
+
 ## Requirements
 
 ### Windows host
@@ -109,6 +122,7 @@ See the **[docs/](docs/)** folder for detailed guides, or each deployment's `REA
 | [docs/environment-setup.md](docs/environment-setup.md) | Full WSL2 + Docker + GPU driver setup walkthrough |
 | [docs/ollama-usage.md](docs/ollama-usage.md) | LLM usage with API examples for each model |
 | [docs/stable-diffusion-usage.md](docs/stable-diffusion-usage.md) | Image generation with prompts, API examples, and parameter reference |
+| [docs/moneyprinter-usage.md](docs/moneyprinter-usage.md) | Short video generation workflow, prompt tips, and API examples |
 
 ## Repository structure
 
@@ -118,7 +132,8 @@ thinkexponential-ailab/
 │   ├── README.md                      # Documentation index
 │   ├── environment-setup.md           # WSL2, Docker, NVIDIA, AMD setup guide
 │   ├── ollama-usage.md                # LLM usage and examples
-│   └── stable-diffusion-usage.md     # Image generation usage and examples
+│   ├── stable-diffusion-usage.md     # Image generation usage and examples
+│   └── moneyprinter-usage.md         # Short video generation usage and examples
 ├── ollama/                            # LLM server + chat UI
 │   ├── docker-compose.nvidia.yml
 │   ├── docker-compose.amd.yml
@@ -128,6 +143,11 @@ thinkexponential-ailab/
 │   ├── docker-compose.nvidia.yml
 │   ├── docker-compose.amd.yml
 │   ├── docker-compose.cpu.yml
+│   └── README.md
+├── moneyprinter/                      # AI short video generation
+│   ├── Dockerfile
+│   ├── docker-compose.cpu.yml
+│   ├── config.toml
 │   └── README.md
 └── scripts/
     ├── check-gpu.sh                   # Detect GPU and recommend compose file
@@ -164,6 +184,7 @@ Contributions are welcome. Please read:
 - [crowsonkb/k-diffusion](https://github.com/crowsonkb/k-diffusion) — upstream dependency used in the CPU Docker build path.
 - [sczhou/CodeFormer](https://github.com/sczhou/CodeFormer) — upstream dependency used in the CPU Docker build path.
 - [salesforce/BLIP](https://github.com/salesforce/BLIP) — upstream dependency used in the CPU Docker build path.
+- [harry0703/MoneyPrinterTurbo](https://github.com/harry0703/MoneyPrinterTurbo) — AI short video generation tool used by the MoneyPrinterTurbo deployment.
 
 ### Runtime images
 

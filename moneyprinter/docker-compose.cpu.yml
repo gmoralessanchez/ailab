@@ -1,0 +1,62 @@
+###################################################################################
+#                                                                                 #
+#  _____ _     _       _    _____                                  _   _       _  #
+# |_   _| |   (_)     | |  |  ___|                                | | (_)     | | #
+#   | | | |__  _ _ __ | | _| |____  ___ __   ___  _ __   ___ _ __ | |_ _  __ _| | #
+#   | | | '_ \| | '_ \| |/ /  __\ \/ / '_ \ / _ \| '_ \ / _ \ '_ \| __| |/ _` | | #
+#   | | | | | | | | | |   <| |___>  <| |_) | (_) | | | |  __/ | | | |_| | (_| | | #
+#   \_/ |_| |_|_|_| |_|_|\_\____/_/\_\ .__/ \___/|_| |_|\___|_| |_|\__|_|\__,_|_| #
+#                                    | |                                          #
+#                                    |_|                                          #
+#                                                                                 #
+#   MoneyPrinterTurbo  ::  AI Short Video Generation (CPU)                        #
+#                                                                                 #
+###################################################################################
+#
+# Usage:
+#   docker compose -f moneyprinter/docker-compose.cpu.yml up -d
+#
+# Ports:
+#   8501 — Streamlit WebUI
+#   8080 — FastAPI REST API
+#
+
+name: thinkexponential-ailab-moneyprinter
+
+services:
+  webui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moneyprinter-webui
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./config.toml:/app/config.toml
+      - mp_storage:/app/storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      streamlit run ./webui/Main.py
+        --server.address=0.0.0.0
+        --server.enableCORS=true
+        --browser.gatherUsageStats=false
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moneyprinter-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.toml:/app/config.toml
+      - mp_storage:/app/storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: python3 main.py
+    restart: unless-stopped
+
+volumes:
+  mp_storage:
