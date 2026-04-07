@@ -132,7 +132,8 @@ thinkexponential-ailab/
 │   ├── README.md                      # Documentation index
 │   ├── environment-setup.md           # WSL2, Docker, NVIDIA, AMD setup guide
 │   ├── ollama-usage.md                # LLM usage and examples
-│   └── stable-diffusion-usage.md     # Image generation usage and examples
+│   ├── stable-diffusion-usage.md     # Image generation usage and examples
+│   └── moneyprinter-usage.md         # Short video generation usage and examples
 ├── ollama/                            # LLM server + chat UI
 │   ├── docker-compose.nvidia.yml
 │   ├── docker-compose.amd.yml
