@@ -9,9 +9,11 @@ name: thinkexponential-ailab-ollama
 #   docker compose -f docker-compose.cpu.yml up -d
 #
 # Pull a model (after containers are running):
-#   docker exec -it ollama ollama pull llama3.2        # smaller model recommended for CPU
+#   docker exec -it ollama ollama pull llama3.3
 #   docker exec -it ollama ollama pull mistral
-#   docker exec -it ollama ollama pull gemma3:2b
+#   docker exec -it ollama ollama pull gemma3
+#   docker exec -it ollama ollama pull deepseek-r1
+#   docker exec -it ollama ollama pull qwen2.5
 #   docker exec -it ollama ollama pull phi4
 #
 # Open WebUI is available at http://localhost:3000

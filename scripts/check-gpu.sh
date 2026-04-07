@@ -114,6 +114,10 @@ else
 fi
 
 echo ""
+echo "MoneyPrinterTurbo (short video generation):"
+echo "  docker compose -f moneyprinter/docker-compose.cpu.yml up -d  (CPU only — no GPU needed)"
+
+echo ""
 echo "Stable Diffusion (image generation):"
 if $NVIDIA_FOUND; then
   echo "  docker compose -f stable-diffusion/docker-compose.nvidia.yml up -d"

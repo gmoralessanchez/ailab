@@ -1,0 +1,79 @@
+project_dir = "/app/storage/projects"
+llm_provider = ""
+
+[openai]
+api_key = ""
+model_name = "gpt-4o-mini"
+base_url = "https://api.openai.com/v1"
+
+[moonshot]
+api_key = ""
+model_name = "moonshot-v1-8k"
+base_url = "https://api.moonshot.cn/v1"
+
+[azure]
+api_key = ""
+model_name = "gpt-4o-mini"
+base_url = ""
+speech_region = ""
+speech_key = ""
+
+[gemini]
+api_key = ""
+model_name = "gemini-2.0-flash"
+
+[ollama]
+api_key = "ollama"
+model_name = "qwen:7b"
+base_url = "http://host.docker.internal:11434/v1"
+
+[deepseek]
+api_key = ""
+model_name = "deepseek-chat"
+base_url = "https://api.deepseek.com"
+
+[qianwen]
+api_key = ""
+model_name = ""
+base_url = ""
+
+[ernie]
+api_key = ""
+base_url = ""
+pexels_api_keys = []
+pixabay_api_keys = []
+subtitle_provider = "edge"
+font_name = "STHeitiMedium.ttc"
+font_size = 60
+stroke_color = "#000000"
+stroke_width = 1.5
+subtitle_position = "bottom"
+
+[azure_tts]
+speech_key = ""
+speech_region = ""
+
+[whisper]
+model_size = "tiny"
+
+[app]
+hide_config = false
+llm_provider = "ollama"
+openai_model_name = "gpt-3.5-turbo"
+video_source = "pexels"
+ollama_model_name = "qwen:7b"
+ollama_base_url = "http://host.docker.internal:11434/v1"
+pexels_api_keys = [ "8XoHu8t84BKNdNj8vB1fIBsD1Ug097v5qZwSu5PLSAufkXNSumCdjcDM",]
+ollama_api_key = "ollama"
+
+[siliconflow]
+api_key = ""
+
+[ui]
+hide_log = false
+language = "en"
+tts_server = "azure-tts-v1"
+voice_name = "en-AU-NatashaNeural-Female"
+font_name = "MicrosoftYaHeiBold.ttc"
+text_fore_color = "#FFFFFF"
+font_size = 60
