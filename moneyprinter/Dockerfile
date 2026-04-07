@@ -38,9 +38,9 @@ RUN git clone --depth 1 --branch v1.2.6 \
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Upgrade edge-tts to 7.x (updated GEC tokens — 6.x tokens expired, causing 403)
+# Upgrade edge-tts to the supported 7.x series (updated GEC tokens — 6.x tokens expired, causing 403)
 # and patch back the mktimestamp function removed in 7.0
-RUN pip install --no-cache-dir --upgrade edge-tts
+RUN pip install --no-cache-dir --upgrade "edge-tts>=7,<8"
 COPY patch_edge_tts.py /app/patch_edge_tts.py
 RUN SITE_DIR=$(python3 -c "import site; print(site.getsitepackages()[0])") && \
     echo "import importlib, sys; sys.path.insert(0, '/app'); import patch_edge_tts" \
