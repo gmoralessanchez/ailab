@@ -63,7 +63,7 @@ openai_model_name = "gpt-3.5-turbo"
 video_source = "pexels"
 ollama_model_name = "qwen:7b"
 ollama_base_url = "http://host.docker.internal:11434/v1"
-pexels_api_keys = [ "8XoHu8t84BKNdNj8vB1fIBsD1Ug097v5qZwSu5PLSAufkXNSumCdjcDM",]
+pexels_api_keys = [ "YOUR_PEXELS_API_KEY",]
 ollama_api_key = "ollama"
 
 [siliconflow]

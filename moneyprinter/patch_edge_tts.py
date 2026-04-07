@@ -3,6 +3,11 @@
 MoneyPrinterTurbo imports `from edge_tts.submaker import mktimestamp`, which was
 removed in edge-tts 7.0. This script injects the function back so the app works
 with the latest edge-tts (which has updated GEC tokens needed to avoid 403 errors).
+
+This module is loaded automatically via `sitecustomize.py` during Python startup,
+so the monkey patch is applied before application code imports `edge_tts.submaker`.
+In the container environment, that means it runs automatically during container
+initialization rather than requiring a manual import.
 """
 
 import importlib
