@@ -2,6 +2,15 @@
 
 Runs [Ollama](https://ollama.com/) as a local LLM server with [Open WebUI](https://github.com/open-webui/open-webui) as a browser-based chat interface. Compatible with Windows + WSL2 on both AMD and NVIDIA GPUs.
 
+## Pinned versions
+
+All Compose files in `ollama/` pin explicit stable releases:
+
+| Component | Version | Images |
+|---|---|---|
+| [Ollama](https://github.com/ollama/ollama/releases/tag/v0.40.16) | `0.40.16` | `ollama/ollama:0.40.16` (CPU / NVIDIA), `ollama/ollama:0.40.16-rocm` (AMD ROCm) |
+| [Open WebUI](https://github.com/open-webui/open-webui/releases/tag/v0.13.3) | `v0.13.3` | `ghcr.io/open-webui/open-webui:v0.13.3` |
+
 ## Supported models
 
 Pull any model from [ollama.com/library](https://ollama.com/library) after the stack is running:
@@ -62,24 +71,58 @@ Pull any model from [ollama.com/library](https://ollama.com/library) after the s
 > **Note:** ROCm on WSL2 is actively developing. Check the [AMD ROCm compatibility matrix](https://rocm.docs.amd.com/en/latest/compatibility/compatibility-matrix.html) to confirm your GPU is supported.
 > **Note:** Docker Engine inside WSL2 is recommended over Docker Desktop for AMD GPU access — Docker Desktop may not correctly expose `/dev/kfd` to containers.
 
-## Quick start
+## Quick start (installation)
+
+From the `ollama/` directory, pull the pinned images and start the stack for your hardware:
 
 ### NVIDIA GPU
 ```bash
+docker compose -f docker-compose.nvidia.yml pull
 docker compose -f docker-compose.nvidia.yml up -d
 ```
 
 ### AMD GPU
 ```bash
+docker compose -f docker-compose.amd.yml pull
 docker compose -f docker-compose.amd.yml up -d
 ```
 
 ### CPU only
 ```bash
+docker compose -f docker-compose.cpu.yml pull
 docker compose -f docker-compose.cpu.yml up -d
 ```
 
 Open **http://localhost:3000** in your browser to access Open WebUI.
+
+## Upgrading
+
+To upgrade an existing deployment after updating the Compose files (for example via `git pull`), pull the updated images and recreate the containers without removing volumes. Existing downloaded models (`ollama_data`), WebUI accounts, chat history, and settings (`open_webui_data`) are preserved.
+
+Replace `<compose-file>` with `docker-compose.nvidia.yml`, `docker-compose.amd.yml`, or `docker-compose.cpu.yml`:
+
+```bash
+docker compose -f <compose-file> pull
+docker compose -f <compose-file> up -d
+```
+
+> **Important:** Do **not** run `docker compose down -v` when upgrading—the `-v` flag deletes the `ollama_data` and `open_webui_data` volumes.
+
+## Verifying versions
+
+After installing or upgrading, verify the running container images and service versions:
+
+```bash
+# Check running container images and status
+docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
+
+# Verify Ollama version (CLI and HTTP API)
+docker exec ollama ollama --version
+curl -s http://localhost:11434/api/version
+
+# Verify Open WebUI version
+curl -s http://localhost:3000/api/version
+```
 
 ## Pulling models
 
